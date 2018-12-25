@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XHR test</title>
+    <script>
+        function sendQuery(typeQuery) {
+
+            let domain = 'http://rsprm.ru/test';
+            let xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                console.log(xhr.responseText);
+            };
+
+            xhr.onerror = function() {
+                console.log( 'Ошибка ' + xhr.statusText );
+            };
+
+            switch (typeQuery) {
+
+                case 'GET':
+
+                    xhr.open('GET', domain + '/trucks', false);
+                    xhr.send();
+
+                    break;
+
+                case 'PATCH':
+
+                    let idPatch = '117';
+                    let truckProp = {
+                        comment: "Нормальный комментарий",
+                        nameTruck: "Фура",
+                        price: "40000"
+                    };
+
+                    xhr.open('PATCH', domain + '/truck/' + idPatch, true);
+                    xhr.setRequestHeader('Content-Type', 'text/plain');
+                    xhr.send(JSON.stringify(truckProp));
+
+                    break;
+
+                case 'POST':
+
+                    let truck = {
+                        comment: "Хорошая машина",
+                        nameTruck: "Mersedes",
+                        price: "30000"
+                    };
+
+                    xhr.open('POST', domain + '/truck/add', true);
+                    xhr.setRequestHeader('Content-Type', 'text/plain');
+                    xhr.send(JSON.stringify(truck));
+
+                    break;
+
+            }
+
+        }
+    </script>
+</head>
+<body>
+
+<button type="button" name="button" onclick="sendQuery('GET')">Сделать GET-запрос</button>
+<button type="button" name="button" onclick="sendQuery('PATCH')">Сделать PATCH-запрос</button>
+<button type="button" name="button" onclick="sendQuery('POST')">Сделать POST-запрос</button>
+
+</body>
+</html>
